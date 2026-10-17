@@ -1,0 +1,15 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+case "$1" in
+  help)
+    echo "Terminal-4"
+    echo "edx help"
+    echo "edx merhaba"
+    ;;
+  merhaba)
+    echo "Terminal_4 GitHub Version 0.1 is working successfully."
+    ;;
+  *)
+    echo "unknown command: $1"
+    ;;
+esac
