@@ -1,43 +1,52 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
-case "$1" in
+LANG_FILE="$HOME/.terminal4_lang"
+LANGUAGE="en"
+
+if [ -f "$LANG_FILE" ]; then
+    LANGUAGE=$(cat "$LANG_FILE")
+fi
+
+case "${1:-help}" in
+  lang)
+    case "$2" in
+      en)
+        echo "Language changed to English."
+        echo en > "$LANG_FILE"
+        ;;
+      tr)
+        echo "Dil Turkce olarak degistirildi."
+        echo tr > "$LANG_FILE"
+        ;;
+      *)
+        echo "Usage: edx lang [en|tr]"
+        ;;
+    esac
+    ;;
+
   help)
-    echo "Terminal-4"
-    echo "edx help"
-    echo "edx merhaba"
-    echo "edx oyun"
-;;
+    echo "================================"
+    echo "       Terminal_4 CLI"
+    echo "================================"
+    echo "help       - Yardim / Help"
+    echo "merhaba    - Test mesaji"
+    echo "settings   - Ayarlar"
+    echo "version    - Surum bilgisi"
+    echo "lang       - Dil secimi"
+    echo "ip         - IPv4 ve IPv6"
+    echo "================================"
+    ;;
+
   merhaba)
-    echo "Terminal_4 GitHub Version 0.1 is working successfully."
+    echo "Merhaba! Terminal_4 hazir."
     ;;
-  *)
-    echo "unknown command: $1"
-    ;;
-esac
 
-  oyun)
-    echo "========================"
-    echo "      EDX MINI GAME"
-    echo "========================"
-    echo "1 ile 10 arasinda bir sayi tut."
-    hedef=$((RANDOM % 10 + 1))
-    read -r -p "Tahminin: " tahmin
-
-    if [[ "$tahmin" =~ ^[0-9]+$ ]] && [ "$tahmin" -eq "$hedef" ]; then
-      echo "Tebrikler! Dogru tahmin!"
-    else
-      echo "Yanlis tahmin!"
-      echo "Tutulan sayi: $hedef"
-    fi
+  version)
+    echo "Terminal_4 CLI version 0.1"
     ;;
 
   ip)
-    echo "========================"
-    echo "    EDX IP ARACI"
-    echo "========================"
-
-    echo
-    echo "[ IPv4 ]"
+    echo "=== IPv4 ==="
     if ! curl -4 -fsS --max-time 8 https://api.ipify.org; then
       echo "IPv4 adresi alinamadi."
     else
@@ -45,10 +54,19 @@ esac
     fi
 
     echo
-    echo "[ IPv6 ]"
+    echo "=== IPv6 ==="
     if ! curl -6 -fsS --max-time 8 https://api6.ipify.org; then
-      echo "IPv6 adresi alinamadi veya desteklenmiyor."
+      echo "IPv6 kullanilamiyor veya adres alinamadi."
     else
       echo
     fi
     ;;
+
+  settings|ayarlar)
+    python "$HOME/Terminal_4/TerminalMENU/View.py"
+    ;;
+
+  *)
+    echo "Bilinmeyen komut. Yardim: edx help"
+    ;;
+esac
