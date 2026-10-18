@@ -5,7 +5,8 @@ case "$1" in
     echo "Terminal-4"
     echo "edx help"
     echo "edx merhaba"
-    ;;
+    echo "edx oyun"
+;;
   merhaba)
     echo "Terminal_4 GitHub Version 0.1 is working successfully."
     ;;
