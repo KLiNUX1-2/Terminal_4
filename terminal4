@@ -13,3 +13,19 @@ case "$1" in
     echo "unknown command: $1"
     ;;
 esac
+
+  oyun)
+    echo "========================"
+    echo "      EDX MINI OYUN"
+    echo "========================"
+    echo "1 ile 10 arasinda bir sayi tut."
+    hedef=$((RANDOM % 10 + 1))
+    read -r -p "Tahminin: " tahmin
+
+    if [[ "$tahmin" =~ ^[0-9]+$ ]] && [ "$tahmin" -eq "$hedef" ]; then
+      echo "Tebrikler! Dogru tahmin!"
+    else
+      echo "Yanlis tahmin!"
+      echo "Tutulan sayi: $hedef"
+    fi
+    ;;
