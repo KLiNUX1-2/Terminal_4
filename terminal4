@@ -1,39 +1,28 @@
+
 #!/data/data/com.termux/files/usr/bin/bash
 
 LANG_FILE="$HOME/.terminal4_lang"
-LANGUAGE="en"
 
 if [ -f "$LANG_FILE" ]; then
     LANGUAGE=$(cat "$LANG_FILE")
+else
+    LANGUAGE="tr"
 fi
 
 case "${1:-help}" in
-  lang)
-    case "$2" in
-      en)
-        echo "Language changed to English."
-        echo en > "$LANG_FILE"
-        ;;
-      tr)
-        echo "Dil Turkce olarak degistirildi."
-        echo tr > "$LANG_FILE"
-        ;;
-      *)
-        echo "Usage: edx lang [en|tr]"
-        ;;
-    esac
-    ;;
 
   help)
     echo "================================"
-    echo "       Terminal_4 CLI"
+    echo "         Terminal_4 CLI"
     echo "================================"
-    echo "help       - Yardim / Help"
-    echo "merhaba    - Test mesaji"
-    echo "settings   - Ayarlar"
-    echo "version    - Surum bilgisi"
-    echo "lang       - Dil secimi"
-    echo "ip         - IPv4 ve IPv6"
+    echo "help          - Yardim"
+    echo "merhaba       - Test mesaji"
+    echo "settings      - Ayarlar"
+    echo "version       - Surum bilgisi"
+    echo "lang          - Dil secimi"
+    echo "ip            - IPv4 ve IPv6"
+    echo "linux-ubuntu  - Ubuntu Linux"
+    echo "windows       - Windows bilgisi"
     echo "================================"
     ;;
 
@@ -45,33 +34,77 @@ case "${1:-help}" in
     echo "Terminal_4 CLI version 0.1"
     ;;
 
+  lang)
+    case "${2:-}" in
+      tr)
+        echo "tr" > "$LANG_FILE"
+        echo "Dil Turkce olarak ayarlandi."
+        ;;
+      en)
+        echo "en" > "$LANG_FILE"
+        echo "Language changed to English."
+        ;;
+      *)
+        echo "Kullanim: edx lang [tr|en]"
+        ;;
+    esac
+    ;;
+
   linux-ubuntu)
     echo "Ubuntu Linux baslatiliyor..."
-    proot-distro login ubuntu
+
+    if command -v proot-distro >/dev/null 2>&1; then
+      proot-distro login ubuntu
+    else
+      echo "proot-distro kurulu degil."
+      echo "Kurmak icin: pkg install proot-distro"
+    fi
+    ;;
+
+  windows)
+    echo "Terminal_4 - Windows"
+    echo "--------------------------------"
+    echo "Termux, Windows'u dogrudan baslatamaz."
+    echo "Windows kullanmak icin uyumlu bir emulasyon"
+    echo "ortami veya uzak Windows bilgisayari gerekir."
     ;;
 
   ip)
     echo "=== IPv4 ==="
-    if ! curl -4 -fsS --max-time 8 https://api.ipify.org; then
-      echo "IPv4 adresi alinamadi."
-    else
-      echo
-    fi
 
-    echo
-    echo "=== IPv6 ==="
-    if ! curl -6 -fsS --max-time 8 https://api6.ipify.org; then
-      echo "IPv6 kullanilamiyor veya adres alinamadi."
-    else
+    if command -v curl >/dev/null 2>&1; then
+      if ! curl -4 -fsS --max-time 8 https://api.ipify.org; then
+        echo "IPv4 adresi alinamadi."
+      else
+        echo
+      fi
+
       echo
+      echo "=== IPv6 ==="
+
+      if ! curl -6 -fsS --max-time 8 https://api6.ipify.org; then
+        echo "IPv6 kullanilamiyor veya adres alinamadi."
+      else
+        echo
+      fi
+    else
+      echo "curl kurulu degil. Kurmak icin: pkg install curl"
     fi
     ;;
 
   settings|ayarlar)
-    python "$HOME/Terminal_4/TerminalMENU/View.py"
+    MENU_FILE="$HOME/Terminal_4/TerminalMENU/View.py"
+
+    if [ -f "$MENU_FILE" ]; then
+      python "$MENU_FILE"
+    else
+      echo "Ayarlar dosyasi bulunamadi:"
+      echo "$MENU_FILE"
+    fi
     ;;
 
   *)
-    echo "Bilinmeyen komut. Yardim: edx help"
+    echo "Bilinmeyen komut: $1"
+    echo "Yardim icin: edx help"
     ;;
 esac
