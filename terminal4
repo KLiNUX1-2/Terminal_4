@@ -45,6 +45,11 @@ case "${1:-help}" in
     echo "Terminal_4 CLI version 0.1"
     ;;
 
+  linux-ubuntu)
+    echo "Ubuntu Linux baslatiliyor..."
+    proot-distro login ubuntu
+    ;;
+
   ip)
     echo "=== IPv4 ==="
     if ! curl -4 -fsS --max-time 8 https://api.ipify.org; then
