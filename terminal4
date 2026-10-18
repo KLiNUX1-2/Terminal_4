@@ -30,3 +30,25 @@ esac
       echo "Tutulan sayi: $hedef"
     fi
     ;;
+
+  ip)
+    echo "========================"
+    echo "    EDX IP ARACI"
+    echo "========================"
+
+    echo
+    echo "[ IPv4 ]"
+    if ! curl -4 -fsS --max-time 8 https://api.ipify.org; then
+      echo "IPv4 adresi alinamadi."
+    else
+      echo
+    fi
+
+    echo
+    echo "[ IPv6 ]"
+    if ! curl -6 -fsS --max-time 8 https://api6.ipify.org; then
+      echo "IPv6 adresi alinamadi veya desteklenmiyor."
+    else
+      echo
+    fi
+    ;;
